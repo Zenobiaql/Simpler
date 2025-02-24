@@ -30,7 +30,7 @@ cd {this_repo}/ManiSkill2_real2sim
 # Hint: "prepackaged_config @True" means using the default visual matching environment configs;
 #       Press "v" to visualize policy observation under visual matching
 
-python mani_skill2_real2sim/examples/demo_manual_control_custom_envs.py -e GraspSingleOpenedCokeCanInScene-v0 \
+python -m demo_manual_control_custom_envs.py -e GraspSingleOpenedCokeCanInScene-v0 \
     -c arm_pd_ee_delta_pose_align_interpolate_by_planner_gripper_pd_joint_target_delta_pos_interpolate_by_planner -o rgbd \
     --enable-sapien-viewer     prepackaged_config @True     robot google_robot_static
 # replace "GraspSingleOpenedCokeCanInScene-v0" with "MoveNearGoogleBakedTexInScene-v1", "OpenDrawerCustomInScene-v0", "CloseDrawerCustomInScene-v0" to test other envs
@@ -41,8 +41,8 @@ python mani_skill2_real2sim/examples/demo_manual_control_custom_envs.py -e Place
     -c arm_pd_ee_delta_pose_align_interpolate_by_planner_gripper_pd_joint_target_delta_pos_interpolate_by_planner -o rgbd \
     --enable-sapien-viewer     prepackaged_config @True     robot google_robot_static   model_ids baked_apple_v2
 
-python mani_skill2_real2sim/examples/demo_manual_control_custom_envs.py -e PutCarrotOnPlateInScene-v0 --enable-sapien-viewer \
-    -c arm_pd_ee_delta_pose_align2_gripper_pd_joint_pos -o rgbd --enable-sapien-viewer     prepackaged_config @True     robot widowx
+    python demo_manual_control_custom_envs.py -e PutSpoonOnTableClothInScene-v0 --enable-sapien-viewer \
+        -c arm_pd_ee_delta_pose_align2_gripper_pd_joint_pos -o rgbd --enable-sapien-viewer     prepackaged_config @True     robot widowx
 # replace "PutCarrotOnPlateInScene-v0" with "PutSpoonOnTableClothInScene-v0", "StackGreenCubeOnYellowCubeBakedTexInScene-v0", 
 #         "PutEggplantInBasketScene-v0" to test other Bridge environments
 
@@ -128,6 +128,7 @@ def parse_args():
 def main():
     np.set_printoptions(suppress=True, precision=3)
     args = parse_args()
+    print("this is 1")
 
     if args.env_id in MS1_ENV_IDS:
         if args.control_mode is not None and not args.control_mode.startswith("base"):
@@ -146,7 +147,8 @@ def main():
             }
 
     from transforms3d.euler import euler2quat
-
+    
+    print("this is 2")
     env: BaseEnv = gym.make(
         args.env_id,
         obs_mode=args.obs_mode,
@@ -157,10 +159,14 @@ def main():
         **args.env_kwargs
     )
 
-    print("Observation space", env.observation_space)
-    print("Action space", env.action_space)
-    print("Control mode", env.control_mode)
-    print("Reward mode", env.reward_mode)
+    print(f"{args.env_kwargs}\n")
+
+    print(f"Observation space{env.observation_space}\n")
+    print(f"Action space{env.action_space}\n")
+    print(f"Control mode{env.control_mode}\n")
+    print(f"Reward mode{env.reward_mode}\n")
+
+    print("this is 3")
 
     env_reset_options = {}
     if (not hasattr(env, "prepackaged_config")) or (not env.prepackaged_config):
@@ -417,7 +423,7 @@ def main():
                     gripper_action = -1
                 elif key == "g":  # close gripper
                     gripper_action = 1
-
+          
         # Other functions
         if key == "0":  # switch to SAPIEN viewer
             render_wait()

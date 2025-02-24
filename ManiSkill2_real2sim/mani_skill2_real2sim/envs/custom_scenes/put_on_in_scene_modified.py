@@ -36,6 +36,7 @@ class PutOnInSceneEnv(MoveNearInSceneEnv):
             tgt_model_id = (self.model_ids.index(src_model_id) + 1) % len(
                 self.model_ids
             )
+
             model_ids = [src_model_id, tgt_model_id]
 
         return super()._set_model(model_ids, model_scales)
@@ -151,6 +152,7 @@ class PutOnBridgeInSceneEnv(PutOnInSceneEnv, CustomBridgeObjectsInSceneEnv):
         self,
         source_obj_name: str = None,
         target_obj_name: str = None,
+        modified_obj_name: str = "apple",
         
         xy_configs: List[np.ndarray] = None,
         quat_configs: List[np.ndarray] = None,
@@ -158,6 +160,8 @@ class PutOnBridgeInSceneEnv(PutOnInSceneEnv, CustomBridgeObjectsInSceneEnv):
     ):
         self._source_obj_name = source_obj_name
         self._target_obj_name = target_obj_name
+        self._modified_obj_name = modified_obj_name
+
         self._xy_configs = xy_configs
         self._quat_configs = quat_configs
         super().__init__(**kwargs)
@@ -242,7 +246,7 @@ class PutOnBridgeInSceneEnv(PutOnInSceneEnv, CustomBridgeObjectsInSceneEnv):
 class PutSpoonOnTableClothInScene(PutOnBridgeInSceneEnv):
     def __init__(
         self,
-        source_obj_name="bridge_plate_objaverse",
+        source_obj_name="green_cube_3cm",
         target_obj_name="table_cloth_generated_shorter",
         **kwargs,
     ):
